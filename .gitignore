@@ -1,0 +1,4 @@
+__pycache__/
+*.py[cod]
+mini-db.data
+demo.data
