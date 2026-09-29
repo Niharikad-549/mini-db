@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import mimetypes
+import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -107,8 +108,9 @@ def main() -> None:
     database = Database(DATA_PATH)
     print("Running the 10,000-record benchmark for the visualizer...")
     benchmark = run_benchmark()
-    server = ThreadingHTTPServer(("127.0.0.1", 8000), make_handler(database, benchmark))
-    print("Mini DB is ready at http://localhost:8000")
+    port = int(os.environ.get("PORT", 8000))
+    server = ThreadingHTTPServer(("0.0.0.0", port), make_handler(database, benchmark))
+    print(f"Mini DB is ready at http://localhost:{port}")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
